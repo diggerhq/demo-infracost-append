@@ -26,6 +26,7 @@ resource "aws_vpc" "vpc_network" {
   }
 }
 
+
 resource "aws_subnet" "vpc_subnet" {
   vpc_id                  = aws_vpc.vpc_network.id
   cidr_block              = "10.0.1.0/24"
@@ -49,6 +50,16 @@ resource "aws_security_group" "security_group" {
 }
 
 resource "aws_instance" "vm_instance" {
+  ami             = "ami-05c13eab67c5d8861"                   # us-east-1 Amazon Linux 2023 AMI 2023.2.20231030.1 x86_64 HVM kernel-6.1
+  instance_type   = "t2.micro"
+  subnet_id       = aws_subnet.vpc_subnet.id
+  security_groups = [aws_security_group.security_group.id]
+  tags = {
+    Name = "terraform-instance"
+  }
+}
+
+resource "aws_instance" "vm_instance2" {
   ami             = "ami-05c13eab67c5d8861"                   # us-east-1 Amazon Linux 2023 AMI 2023.2.20231030.1 x86_64 HVM kernel-6.1
   instance_type   = "t2.micro"
   subnet_id       = aws_subnet.vpc_subnet.id
