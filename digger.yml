@@ -9,4 +9,8 @@ workflows:
       steps:
         - init
         - plan
-        - run: echo $PROJECT_NAME $PROJECT_DIR $PR_BRANCH $DEFAULT_BRANCH > $DIGGER_OUT
+        - run: git checkout $DEFAULT_BRANCH && infracost breakdown --path . --format=json --outfile=/tmp-infracost-base-${PROJECT_NAME}.json && git checkout $PR_BRANCH
+        - run: infracost diff --path=. \
+                          --format=json \
+                          --compare-to=/tmp-infracost-base-${PROJECT_NAME}.json \
+                          --out-file=$DIGGER_OUT
