@@ -9,4 +9,4 @@ workflows:
       steps:
         - init
         - plan
-        - run: infracost breakdown --path=. | tee -a $DIGGER_OUT
+        - run: echo $PROJECT_NAME $PROJECT_DIR $PR_BRANCH $DEFAULT_BRANCH > $DIGGER_OUT
