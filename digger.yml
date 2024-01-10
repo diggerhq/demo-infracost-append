@@ -9,8 +9,8 @@ workflows:
       steps:
         - init
         - plan
-        - run: git checkout $DEFAULT_BRANCH && infracost breakdown --path . --format=json --out-file=/tmp-infracost-base-${PROJECT_NAME}.json && git checkout $PR_BRANCH
+        - run: git checkout $DEFAULT_BRANCH && infracost breakdown --path . --format=json --out-file=$RUNNER_TEMP/infracost-base-${PROJECT_NAME}.json && git checkout $PR_BRANCH
         - run: infracost diff --path=. \
                           --format=json \
-                          --compare-to=/tmp-infracost-base-${PROJECT_NAME}.json \
+                          --compare-to=$RUNNER_TEMP/infracost-base-${PROJECT_NAME}.json \
                           --out-file=$DIGGER_OUT
